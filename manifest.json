@@ -1,6 +1,27 @@
 {
-  "name": "Getting Started Example",
+  "name": "Musi.sh Currently Playing",
   "version": "1.0",
-  "description": "Build an Extension!",
+  "description": "Grab what is currently playing on musi.sh and display it for the stream.",
+  "permissions": ["activeTab","declarativeContent","storage"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "page_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/plugin16.png",
+      "32": "images/plugin32.png",
+      "48": "images/plugin48.png",
+      "128": "images/plugin128.png"
+    }
+  },
+  "icons": {
+    "16": "images/plugin16.png",
+    "32": "images/plugin32.png",
+    "48": "images/plugin48.png",
+    "128": "images/plugin128.png"
+  },
   "manifest_version": 2
+
 }
