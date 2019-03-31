@@ -2,7 +2,7 @@
   "name": "Musi.sh Currently Playing",
   "version": "1.0",
   "description": "Grab what is currently playing on musi.sh and display it for the stream.",
-  "permissions": ["activeTab","declarativeContent","storage"],
+  "permissions": ["activeTab","activeTab","declarativeContent","storage"],
   "background": {
     "scripts": ["background.js"],
     "persistent": false
@@ -17,6 +17,13 @@
     }
   },
   "options_page": "options.html",
+
+  "content_scripts": [
+    {
+      "matches": ["https://musi.sh/*"],
+      "js": ["grabSongInfo.js"]
+    }
+  ],
   "icons": {
     "16": "images/plugin16.png",
     "32": "images/plugin32.png",
