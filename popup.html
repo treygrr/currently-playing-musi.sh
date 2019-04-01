@@ -2,20 +2,141 @@
 <html>
 <head>
     <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat:,100,400,600,900i');
+
+        body {
+            width: 350px;
+            height: 350px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .TitleWrapper {
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 30px;
+            font-weight: 900;
+        }
+
+        h1 strong {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 30px;
+            font-weight: 400;
+        }
+
+        h2 {
+
+        }
+
+        h3 {
+
+        }
+
+        h4 {
+
+        }
+
+        h5 {
+
+        }
+
         button {
-            height: 30px;
-            width: 30px;
+            height: auto;
+            padding-left: 25px;
+            padding-right: 25px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            display: block;
+            width: 50%;
             outline: none;
-            margin: 10px;
+            margin: 10px auto;
+        }
+
+        form {
+            font-weight: 100;
+            display: block;
+        }
+
+        label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            width: 100%;
+            text-align: center;
+            display: block;
+        }
+
+        input {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            display: block;
+            width: 40px;
+            margin: 20px auto;
+
+        }
+
+        span {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            display: block;
+            margin: 20px auto;
+            width: auto;
+            text-align: center;
+        }
+
+        .success {
+            border: 3px solid transparent;
+            transition: 1s;
+            transition-property: all;
+            transition-timing-function: ease-in-out;
+        }
+
+        .green {
+            border-color: limegreen;
+        }
+
+        .red {
+            border-color: red;
+        }
+        .saving {
+            opacity: 0;
+            transition: 1s;
+            transition-property: all;
+            transition-timing-function: ease-in-out;
+        }
+        #currentSetting {
+            width: 20px;
+            margin: 0;
+            display: inline-block;
+        }
+        .saved {
+            opacity: 1;
         }
     </style>
 </head>
-<body>
+<body id="bodyEl" class="success">
 <div id="buttonDiv">
 </div>
-<div>
-    <p>Choose a different background color!</p>
+<div class="TitleWrapper">
+    <h1>Musi.sh <strong>Now Playing</strong></h1>
 </div>
+<form id="setInterval">
+    <label for="text">Set Refresh Interval</label>
+    <span>1 = 1 second</span>
+    <input type="number" id="text" value="5">
+    <span id="setTimerInt">Current Timer:&nbsp;<span id="currentSetting"></span></span>
+</form>
+<button id="button" for="setInterval">
+    Save
+</button>
+<span id="status" class="saving"></span>
+</form>
 </body>
-<script src="options.js"></script>
+<script src="popup.js"></script>
 </html>

@@ -16,8 +16,9 @@
       "128": "images/plugin128.png"
     }
   },
-  "options_page": "options.html",
-
+  "externally_connectable": {
+    "matches": ["https://musi.sh/"]
+  },
   "content_scripts": [
     {
       "matches": ["https://musi.sh/*"],

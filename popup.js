@@ -2,55 +2,86 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// Check if browser domain is = musi.sh
+// Check if browser domain is = musi.sh √
 // if its looks for div that contains title
 // save that to a local file
 
 // create a OBS plugin that reads the file contents from disk every 5 seconds
-
-
-/*
-var myText;
-var myStrText=JSON.stringify(myText);
-
-
-
-// then call a function with arguments (name, data)
-saveText("default_name.txt", myStrText);
-
-
-
-// function to save it to HDD (default download folder or with prompt) is like this
-function saveText(filename, text) {
-  var tempElem = document.createElement('a');
-  tempElem.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-  tempElem.setAttribute('download', filename);
-  tempElem.click();
-}
-*/
-
-
-
 'use strict';
-let page = document.getElementById('buttonDiv');
+let timerVal = document.getElementById("text").value;
+const button = document.getElementById('button');
+let bodyEl = document.getElementById("bodyEl");
+const fileName = "MNPSETTINGS";
+let status = document.getElementById('status');
 
-function setBgColor(color) {
-  page.setAttribute("style", `background-color: ${color};`);
+
+
+function saveTimerVal() {
+    timerVal = document.getElementById("text").value;
+    if (timerVal !== "" && timerVal !== undefined && timerVal >= 1) {
+        save_options();
+        return;
+    }
+    status.textContent = 'ERROR';
+    status.classList.add('saved');
+    bodyEl.classList.add("red");
+    setTimeout(function() {
+        status.classList.remove('saved');
+        bodyEl.classList.remove("red");
+    }, 2000);
+
 }
 
-const kButtonColors = ['#3aa757', '#e8453c', '#f9bb2d', '#4688f1'];
-function constructOptions(kButtonColors) {
-  for (let item of kButtonColors) {
-    let button = document.createElement('button');
-    button.style.backgroundColor = item;
-    button.addEventListener('click', function() {
-      chrome.storage.sync.set({color: item}, function() {
-        console.log('color is ' + item);
-        setBgColor(item);
-      })
+button.addEventListener('click', function(){
+    console.log(timerVal);
+    saveTimerVal();
+});
+
+
+
+
+
+function save_options() {
+    chrome.storage.sync.set({
+        timerVal: timerVal
+    }, function() {
+        let status = document.getElementById('status');
+        let currentSetting = document.getElementById('currentSetting');
+        // Update status to let user know options were saved.
+        status.textContent = 'Options saved.';
+        currentSetting.textContent = timerVal;
+        status.classList.add("saved");
+        bodyEl.classList.add("green");
+        setTimeout(function() {
+            bodyEl.classList.remove("green");
+            status.classList.remove("saved");
+        }, 2000);
     });
-
-    page.appendChild(button);
-  }
 }
-constructOptions(kButtonColors);
+
+function restore_options() {
+    // Use default value color = 'red' and likesColor = true.
+    chrome.storage.sync.get({
+        timerVal: timerVal
+    }, function(items) {
+        let currentSetting = document.getElementById('currentSetting');
+
+        console.log('loaded the value ' + items.timerVal);
+        currentSetting.textContent = items.timerVal;
+        let onLoadTimer = document.getElementById('text');
+        onLoadTimer.value = parseInt(items.timerVal);
+        status.textContent = "Grabbed your saved settings";
+        status.classList.add("saved");
+        bodyEl.classList.add("green");
+        setTimeout(function() {
+            status.textContent = '';
+            bodyEl.classList.remove("green");
+            status.classList.remove("saved");
+        }, 2000);
+    });
+}
+document.addEventListener('DOMContentLoaded', restore_options);
+
+
+
+
