@@ -14,6 +14,10 @@ let status        = document.getElementById('status');
 let statusPanel        = document.getElementById('statusPanel');
 let currentInfo   = document.getElementById('currentInfo');
 let TimerValueToRefresh = 1;
+let albumnArt = document.getElementById('coverImageSelector');
+let albumInfo = document.getElementById('albumInfo');
+
+
 
 function saveTimerVal() {
     timerVal = document.getElementById("text").value;
@@ -27,7 +31,7 @@ function saveTimerVal() {
     setTimeout(function() {
         status.classList.remove('saved');
         statusPanel.classList.remove('InfoPanel--Show', 'red');
-    }, 2000);
+    }, 3000);
 
 }
 
@@ -53,7 +57,7 @@ function save_options() {
             status.classList.remove("saved");
             statusPanel.classList.remove('InfoPanel--Show', 'green');
 
-        }, timerVal);
+        }, 2000);
     });
 }
 
@@ -78,44 +82,67 @@ function restore_options() {
         }, 2000);
     });
 }
-function show_artist() {
-    // Use default value color = 'red' and likesColor = true.
 
-    chrome.storage.sync.get(['playing'], function (result) {
-        if (result.playing === 'true' || result.playing) {
-            chrome.storage.sync.get(['artistName'], function (result) {
-                let artistNameSelector = document.getElementById('currentArtist');
-                console.log('Artist currently is ' + result.artistName);
-                artistNameSelector.innerText = result.artistName;
-            });
-            chrome.storage.sync.get(['songTitle'], function (result) {
-                let songTitleSelector = document.getElementById('currentSong');
-                console.log('Song Title is : ' + result.songTitle);
-                songTitleSelector.innerText = result.songTitle;
-            });
+let artistNameSelector = document.getElementById('currentArtist');
+function show_artist() {
+    chrome.storage.sync.get(['artistName'], function (result) {
+        if (artistNameSelector.innerText === result.artistName){
             chrome.storage.sync.get(['cover'], function (result) {
                 let imageSelector = document.getElementById('coverImageSelector');
-                console.log('Song Title is : ' + result.cover);
                 imageSelector.src = result.cover;
+                albumnArt.classList.add('ImageSelector--Visible');
+                albumInfo.classList.add('albumInfo--Visible');
             });
-        } else {
-            console.log(result.playing);
         }
+        if (artistNameSelector.innerText !== result.artistName){
+            chrome.storage.sync.get(['cover'], function (result) {
+                let imageSelector = document.getElementById('coverImageSelector');
+                albumnArt.classList.remove('ImageSelector--Visible');
+                albumInfo.classList.remove('albumInfo--Visible');
+
+                setTimeout(function() {
+                    imageSelector.src = result.cover;
+                    albumInfo.classList.add('albumInfo--Visible');
+
+                    albumnArt.classList.add('ImageSelector--Visible');
+
+                }, 1000);
+            });
+
+        }
+
+    });
+    chrome.storage.sync.get(['artistName'], function (result) {
+        artistNameSelector = document.getElementById('currentArtist');
+        console.log('Artist currently is ' + result.artistName);
+        artistNameSelector.innerText = result.artistName;
+    });
+    chrome.storage.sync.get(['songTitle'], function (result) {
+        let songTitleSelector = document.getElementById('currentSong');
+        console.log('Song Title is : ' + result.songTitle);
+        songTitleSelector.innerText = result.songTitle;
     });
 
 }
 
+
+
 window.setInterval(function() {
+    console.log('ticking');
     chrome.storage.sync.get(['playing'], function (result) {
         if (result.playing === true){
+
             show_artist();
+        } else {
+            albumnArt.classList.remove('ImageSelector--Visible')
+            console.log('Does not match');
         }
     });
-    show_artist();
     },5000);
 
 
 document.addEventListener('DOMContentLoaded', restore_options);
+document.addEventListener('DOMContentLoaded', show_artist);
 
 
 

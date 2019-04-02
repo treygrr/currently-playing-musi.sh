@@ -6,11 +6,12 @@
 
     <style>
         body {
-            width: 800px;
-            height: 250px;
+            width: 525px;
+            height: fit-content;
             padding: 0;
             margin: 0;
-            color: black !important;
+            color: dimgray !important;
+
         }
 
         .TitleWrapper {
@@ -20,8 +21,11 @@
 
         p {
             font-family: 'PT Sans', sans-serif;
-            font-size: 17px;
-            color: black;
+            font-size: 16px;
+            padding-top: 0;
+            padding-bottom: 4px;
+            margin: 0;
+            color: dimgray;
         }
 
         h1 {
@@ -29,6 +33,9 @@
             Font-Family: 'Permanent Marker', sans-serif;
             Font-Size: 25px;
             font-weight: 900;
+            border-bottom: 1px solid lightslategray;
+            margin-bottom: 20px;
+            padding: 10px;
         }
 
         h1 strong {
@@ -60,14 +67,16 @@
         }
 
         #text {
-            height: 30px;
-            width: 50%;
+            height: 50px;
+            width: 50px;
             border: none;
             Font-Family: 'Permanent Marker', sans-serif;
             Font-Size: 32px;
             text-align: center;
-            margin: 0 auto;
+            margin: 10px auto;
             display: block;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
         }
 
         .success {
@@ -93,43 +102,53 @@
         }
         button#button {
             font-family: 'PT Sans', sans-serif;
-            font-size: 22px;
+            font-size: 16px;
             font-weight: bold;
-            width: 50%;
+            width: 50px;
             display: block;
+            color: dimgray;
             height: auto;
             margin: 10px auto;
             text-transform: uppercase;
-            border: 1px solid deeppink;
+            border: 1px solid dimgray;
+            background-color: white;
+            padding: 0;
         }
         .saved {
             opacity: 1;
         }
 
-        #setInterval {
-            border-left: 1px solid gray;
-        }
         .SectionWrapper {
-            height: 200px;
+            height: fit-content;
             width: 100%;
             display: flex;
-            background-color: aquamarine;
             flex-direction: row;
+            margin-bottom: 20px;
+
         }
         .SectionWrapper__NowPlaying {
             height: fit-content;
-            width: 70%;
-            background-color: pink;
+            min-width: 70%;
 
         }
         .SectionWrapper__CurrentSettings {
             height: fit-content;
-            width: 30%;
-            background-color: green;
+            min-width: 30%;
         }
         #setTimerInt {
             display: block;
         }
+        .ImageSelector {
+            transition:transform .5s ease-in-out;
+            margin-left: 20px;
+            border-radius: 100%;
+            transform: translateX(-300px);
+
+        }
+        .ImageSelector--Visible {
+            transform: translateX(0);
+        }
+
         #currentSetting {
             display: inline-block;
         }
@@ -158,7 +177,26 @@
         .InfoPanel--Show {
             top: -2px;
         }
+        #currentInfo {
+            display: flex;
+            flex-direction: row;
+            border-right: 1px solid lightslategray;
 
+        }
+        .albumCover {
+            width: 120px;
+        }
+        .albumInfo {
+            width: auto;
+            margin-left: 10px;
+            opacity: 0;
+            transition: .5s;
+            transition-property: all;
+            transition-timing-function: ease-in-out;
+        }
+        .albumInfo--Visible {
+            opacity: 1;
+        }
         .green {
             border-color: limegreen;
             color: limegreen;
@@ -167,6 +205,9 @@
         .red {
             border-color: red;
             color: red;
+        }
+        #setInterval {
+            width: 100%;
         }
     </style>
 </head>
@@ -179,11 +220,18 @@
     <div class="SectionWrapper">
         <div class="SectionWrapper__NowPlaying">
             <span id="currentInfo">
-                <img src="" height="100px" width="100px" id="coverImageSelector">
-                <span id="currentSong">
-                </span>
-                <span id="currentArtist">
-                </span>
+                <div class="albumCover">
+                    <img alt="Album Art" src="" height="100px" class="ImageSelector" width="100px" id="coverImageSelector">
+                </div>
+                <div class="albumInfo" id="albumInfo">
+                    <p><b>Song:</b></p>
+                    <p id="currentSong">
+                    </p>
+                    <p><b>Artist:</b> </p>
+                    <p id="currentArtist">
+                    </p>
+                </div>
+
             </span>
 
 
@@ -191,7 +239,7 @@
         </div>
         <div class="SectionWrapper__CurrentSettings">
             <form id="setInterval">
-                <label id="label" for="text">(seconds)</label>
+                <label id="label" for="text">Refresh Rate<br>(seconds)</label>
                 <input type="number" id="text" value="5">
             </form>
             <button id="button">
