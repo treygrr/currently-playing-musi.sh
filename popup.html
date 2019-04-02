@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Montserrat:,100,400,600,900i');
+    <link href="https://fonts.googleapis.com/css?family=Overpass|Permanent+Marker" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300|PT+Sans" rel="stylesheet">
 
+    <style>
         body {
-            width: 350px;
-            height: 350px;
+            width: 800px;
+            height: 250px;
             padding: 0;
             margin: 0;
+            color: black !important;
         }
 
         .TitleWrapper {
@@ -16,15 +18,22 @@
             text-align: center;
         }
 
+        p {
+            font-family: 'PT Sans', sans-serif;
+            font-size: 17px;
+            color: black;
+        }
+
         h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 30px;
+            margin: 0;
+            Font-Family: 'Permanent Marker', sans-serif;
+            Font-Size: 25px;
             font-weight: 900;
         }
 
         h1 strong {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 30px;
+            font-family: 'PT Sans', sans-serif;
+            Font-Size: 25px;
             font-weight: 400;
         }
 
@@ -44,50 +53,21 @@
 
         }
 
-        button {
-            height: auto;
-            padding-left: 25px;
-            padding-right: 25px;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            display: block;
+        #status {
+            Font-Family: 'Permanent Marker', sans-serif;
+            Font-Size: 12px;
+            text-align: center;
+        }
+
+        #text {
+            height: 30px;
             width: 50%;
-            outline: none;
-            margin: 10px auto;
-        }
-
-        form {
-            font-weight: 100;
-            display: block;
-        }
-
-        label {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 18px;
-            font-weight: 400;
-            width: 100%;
+            border: none;
+            Font-Family: 'Permanent Marker', sans-serif;
+            Font-Size: 32px;
             text-align: center;
+            margin: 0 auto;
             display: block;
-        }
-
-        input {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 18px;
-            font-weight: 400;
-            display: block;
-            width: 40px;
-            margin: 20px auto;
-
-        }
-
-        span {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 18px;
-            font-weight: 400;
-            display: block;
-            margin: 20px auto;
-            width: auto;
-            text-align: center;
         }
 
         .success {
@@ -97,46 +77,133 @@
             transition-timing-function: ease-in-out;
         }
 
-        .green {
-            border-color: limegreen;
-        }
 
-        .red {
-            border-color: red;
-        }
+
         .saving {
             opacity: 0;
             transition: 1s;
-            transition-property: all;
+            transition-property: opacity;
             transition-timing-function: ease-in-out;
         }
+
         #currentSetting {
             width: 20px;
             margin: 0;
             display: inline-block;
         }
+        button#button {
+            font-family: 'PT Sans', sans-serif;
+            font-size: 22px;
+            font-weight: bold;
+            width: 50%;
+            display: block;
+            height: auto;
+            margin: 10px auto;
+            text-transform: uppercase;
+            border: 1px solid deeppink;
+        }
         .saved {
             opacity: 1;
+        }
+
+        #setInterval {
+            border-left: 1px solid gray;
+        }
+        .SectionWrapper {
+            height: 200px;
+            width: 100%;
+            display: flex;
+            background-color: aquamarine;
+            flex-direction: row;
+        }
+        .SectionWrapper__NowPlaying {
+            height: fit-content;
+            width: 70%;
+            background-color: pink;
+
+        }
+        .SectionWrapper__CurrentSettings {
+            height: fit-content;
+            width: 30%;
+            background-color: green;
+        }
+        #setTimerInt {
+            display: block;
+        }
+        #currentSetting {
+            display: inline-block;
+        }
+        #label {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        .InfoPanel {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            width: 200px;
+            height: 40px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            position:absolute;
+            top:-100px;
+            background-color: white;
+            left: calc(50% - 100px);
+            border: 2px solid transparent;
+            border-bottom-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            transition:all 1s linear;
+        }
+        .InfoPanel--Show {
+            top: -2px;
+        }
+
+        .green {
+            border-color: limegreen;
+            color: limegreen;
+        }
+
+        .red {
+            border-color: red;
+            color: red;
         }
     </style>
 </head>
 <body id="bodyEl" class="success">
-<div id="buttonDiv">
-</div>
-<div class="TitleWrapper">
-    <h1>Musi.sh <strong>Now Playing</strong></h1>
-</div>
-<form id="setInterval">
-    <label for="text">Set Refresh Interval</label>
-    <span>1 = 1 second</span>
-    <input type="number" id="text" value="5">
-    <span id="setTimerInt">Current Timer:&nbsp;<span id="currentSetting"></span></span>
-</form>
-<button id="button" for="setInterval">
-    Save
-</button>
-<span id="status" class="saving"></span>
-</form>
+    <div id="buttonDiv">
+    </div>
+    <div class="TitleWrapper">
+        <h1>MUSI.SH NOW PLAYING</h1>
+    </div>
+    <div class="SectionWrapper">
+        <div class="SectionWrapper__NowPlaying">
+            <span id="currentInfo">
+                <img src="" height="100px" width="100px" id="coverImageSelector">
+                <span id="currentSong">
+                </span>
+                <span id="currentArtist">
+                </span>
+            </span>
+
+
+
+        </div>
+        <div class="SectionWrapper__CurrentSettings">
+            <form id="setInterval">
+                <label id="label" for="text">(seconds)</label>
+                <input type="number" id="text" value="5">
+            </form>
+            <button id="button">
+                Save
+            </button>
+
+        </div>
+    </div>
+    <div id="statusPanel" class="InfoPanel">
+        <span id="status" class="saving"></span>
+    </div>
+
 </body>
 <script src="popup.js"></script>
 </html>

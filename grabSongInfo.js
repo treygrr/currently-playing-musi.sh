@@ -9,10 +9,34 @@ let body = document.getElementById('body');
 window.setInterval(function(){
     console.log('Page is found.');
 
-    chrome.runtime.sendMessage({
-        from: 'content',
-        subject: 'showPageAction'
-    });
+
+    let artist = document.querySelector('.fc77');
+    let songTitle = document.querySelector('._5b82 > h1');
+    let albumArt = document.getElementsByClassName('_1c3b')[0];
+    if (artist !== null && artist !== undefined && artist !== "") {
+        if (songTitle !== null && songTitle !== undefined && songTitle !== "") {
+            console.log('Artist is: ');
+            console.log(artist.innerText);
+            console.log('Song Name is: ');
+            console.log(songTitle.innerText);
+            chrome.runtime.sendMessage({
+                from: 'content',
+                subject: 'showPageAction',
+                songName: songTitle.innerText,
+                artistName: artist.innerText,
+                cover: albumArt.src,
+                playing: true
+            });
+        }
+    } else {
+        console.log("Waiting on something to play!");
+        chrome.runtime.sendMessage({
+            from: 'content',
+            subject: 'showPageAction',
+            playing: false
+        });
+    }
+
 
 // Listen for messages from the popup
     chrome.runtime.onMessage.addListener(function (msg, sender, response) {
@@ -21,11 +45,7 @@ window.setInterval(function(){
             // Collect the necessary data
             // (For your specific requirements `document.querySelectorAll(...)`
             //  should be equivalent to jquery's `$(...)`)
-            var domInfo = {
-                total: document.querySelectorAll('*').length,
-                inputs: document.querySelectorAll('input').length,
-                buttons: document.querySelectorAll('button').length
-            };
+
 
             // Directly respond to the sender (popup),
             // through the specified callback */

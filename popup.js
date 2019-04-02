@@ -8,13 +8,12 @@
 
 // create a OBS plugin that reads the file contents from disk every 5 seconds
 'use strict';
-let timerVal = document.getElementById("text").value;
-const button = document.getElementById('button');
-let bodyEl = document.getElementById("bodyEl");
-const fileName = "MNPSETTINGS";
-let status = document.getElementById('status');
-
-
+let timerVal      = document.getElementById("text").value;
+const button      = document.getElementById('button');
+let status        = document.getElementById('status');
+let statusPanel        = document.getElementById('statusPanel');
+let currentInfo   = document.getElementById('currentInfo');
+let TimerValueToRefresh = 1;
 
 function saveTimerVal() {
     timerVal = document.getElementById("text").value;
@@ -24,16 +23,15 @@ function saveTimerVal() {
     }
     status.textContent = 'ERROR';
     status.classList.add('saved');
-    bodyEl.classList.add("red");
+    statusPanel.classList.add('InfoPanel--Show', 'red');
     setTimeout(function() {
         status.classList.remove('saved');
-        bodyEl.classList.remove("red");
+        statusPanel.classList.remove('InfoPanel--Show', 'red');
     }, 2000);
 
 }
 
 button.addEventListener('click', function(){
-    console.log(timerVal);
     saveTimerVal();
 });
 
@@ -46,16 +44,16 @@ function save_options() {
         timerVal: timerVal
     }, function() {
         let status = document.getElementById('status');
-        let currentSetting = document.getElementById('currentSetting');
         // Update status to let user know options were saved.
-        status.textContent = 'Options saved.';
-        currentSetting.textContent = timerVal;
+        status.textContent = 'Settings saved';
+        statusPanel.classList.add('InfoPanel--Show', 'green');
+
         status.classList.add("saved");
-        bodyEl.classList.add("green");
         setTimeout(function() {
-            bodyEl.classList.remove("green");
             status.classList.remove("saved");
-        }, 2000);
+            statusPanel.classList.remove('InfoPanel--Show', 'green');
+
+        }, timerVal);
     });
 }
 
@@ -64,22 +62,59 @@ function restore_options() {
     chrome.storage.sync.get({
         timerVal: timerVal
     }, function(items) {
-        let currentSetting = document.getElementById('currentSetting');
 
-        console.log('loaded the value ' + items.timerVal);
-        currentSetting.textContent = items.timerVal;
+        TimerValueToRefresh = items.timerVal;
         let onLoadTimer = document.getElementById('text');
         onLoadTimer.value = parseInt(items.timerVal);
-        status.textContent = "Grabbed your saved settings";
+        status.textContent = "Loaded Settings";
         status.classList.add("saved");
-        bodyEl.classList.add("green");
+        statusPanel.classList.add('InfoPanel--Show', 'green');
+
         setTimeout(function() {
             status.textContent = '';
-            bodyEl.classList.remove("green");
+            statusPanel.classList.remove('InfoPanel--Show', 'green');
+
             status.classList.remove("saved");
         }, 2000);
     });
 }
+function show_artist() {
+    // Use default value color = 'red' and likesColor = true.
+
+    chrome.storage.sync.get(['playing'], function (result) {
+        if (result.playing === 'true' || result.playing) {
+            chrome.storage.sync.get(['artistName'], function (result) {
+                let artistNameSelector = document.getElementById('currentArtist');
+                console.log('Artist currently is ' + result.artistName);
+                artistNameSelector.innerText = result.artistName;
+            });
+            chrome.storage.sync.get(['songTitle'], function (result) {
+                let songTitleSelector = document.getElementById('currentSong');
+                console.log('Song Title is : ' + result.songTitle);
+                songTitleSelector.innerText = result.songTitle;
+            });
+            chrome.storage.sync.get(['cover'], function (result) {
+                let imageSelector = document.getElementById('coverImageSelector');
+                console.log('Song Title is : ' + result.cover);
+                imageSelector.src = result.cover;
+            });
+        } else {
+            console.log(result.playing);
+        }
+    });
+
+}
+
+window.setInterval(function() {
+    chrome.storage.sync.get(['playing'], function (result) {
+        if (result.playing === true){
+            show_artist();
+        }
+    });
+    show_artist();
+    },5000);
+
+
 document.addEventListener('DOMContentLoaded', restore_options);
 
 
